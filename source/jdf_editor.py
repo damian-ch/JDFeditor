@@ -477,8 +477,8 @@ class MainMenu(object):
 
         self.menuitem = Gtk.MenuItem()
         self.menuitem.add(make_menu_item('accessories-dictionary', 'Donate'))
-        link = 'http://damianch.eu.pn/index.html#donate'
-        self.menuitem.connect('activate', lambda q: webbrowser.open(link))
+        link_address = 'http://damianch.eu.pn/index.html#donate'
+        self.menuitem.connect('activate', lambda q: webbrowser.open(link_address))
         self.menuitem.connect('select', lambda q: status_msg('Support Damian is his journey through college'))
         self.menu.append(self.menuitem)
 

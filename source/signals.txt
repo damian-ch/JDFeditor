@@ -1,0 +1,55 @@
+tab_control(signal, data=None):
+    'close'
+    'new'
+    'next'
+    'previous'
+    'close-from-class'
+    'switched'
+    'switch-to-last'
+    'switch-to-first'
+    'force-close'
+
+add_column(signal):
+    'insert-at'
+    'append'
+    'prepend'
+
+delete_column(signal):
+    'delete-first'
+    'delete-last'
+    'delete-at'
+
+add_row(signal):
+    'prepend'
+    'append'
+    'insert-at'
+    'insert-here'
+
+delete_row(signal):
+    'delete-first'
+    'delete-last'
+    'delete-at'
+    'delete-here'
+
+dialog_ask(signal, dialog_name, prompt, combo_list=None, combo_prompt='', sec_combo_list=None, sec_combo_prompt=''):
+    'entry' - adds an entry box
+    'combo' - adds a combo box
+    'sec' - adds a second combo Box
+    'num' - return from the second combo box is an int
+
+display_dialog(signal, prompt, choice=False):
+    'warn'
+    'info'
+    'error'
+    'quest'
+
+infobar_msg(signal, msg_txt):
+    'warn'
+    'info'
+    'error'
+    'quest'
+
+clipboard_manager(signal):
+    'copy'
+    'paste'
+    'cut'

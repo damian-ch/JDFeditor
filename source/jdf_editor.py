@@ -5,7 +5,7 @@
 # Purpose:     JDF database editor
 # Author:      Damian Chrzanowski
 # Created:     22/03/16
-# Modified:    06/04/16
+# Modified:    14/04/16
 # Copyright:   pjdamian.chrzanowski@gmail.com
 # License:     GNU Public License v3
 # Version:     1.0
@@ -31,6 +31,7 @@
 # --------------------------------------------
 from gi.repository import Gdk, GdkPixbuf, Gtk
 
+import export_html
 import jdf_lib
 import os
 import webbrowser
@@ -40,7 +41,7 @@ if os.name == 'nt':
 else:
     PATH_BREAK = '/'   # set the Linux / Mac OS X style path breaker = '/'
 
-VERSION = 'v 1.0'   # current version
+VERSION = 'v 1.1'   # current version
 
 
 class MainWindow(object):
@@ -249,6 +250,15 @@ class MainMenu(object):
 
         self.recentchoosermenu.connect("item-activated", self.item_activated)
         self.menuitem.set_submenu(self.recentchoosermenu)
+
+        self.separator = Gtk.SeparatorMenuItem()
+        self.menu1.append(self.separator)
+
+        self.menuitem = Gtk.MenuItem()
+        self.menuitem.add(make_menu_item('text-html', 'Export as HTML'))
+        self.menuitem.connect("activate", lambda q: export_to_html())
+        self.menuitem.connect('select', lambda q: status_msg('Export current database as a html file'))
+        self.menu1.append(self.menuitem)
 
         self.separator = Gtk.SeparatorMenuItem()
         self.menu1.append(self.separator)
@@ -846,7 +856,7 @@ class DataCells(object):
         # self.scrolled_window.set_overlay_scrolling()
         self.scrolled_window.unset_placement()
 
-        # make a box for the tabs header
+        # make a box for the tabs' header
         self.notebook_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
 
         filename_no_path = self.file_name.split(PATH_BREAK)[-1]  # extract just the filename (no path)
@@ -1003,12 +1013,12 @@ class DataCells(object):
 
         (self) -> None
 
-        This method adds an asterix in front of the file name one the tab and on the window title.
+        This method adds an asterisk in front of the file name one the tab and on the window title.
         """
         if not self.file_edited:   # if file has not been edited
             self.file_edited = True   # change the state to edited
             text = self.notebook_label.get_text()   # retrieve the filename from the notebook label
-            self.notebook_label.set_text('* ' + text)   # add an asterix in front of the name
+            self.notebook_label.set_text('* ' + text)   # add an asterisk in front of the name
             self.MAINWINDOW.post_filename_to_title('* ' + text)   # do the same with the window title
 
 
@@ -1560,7 +1570,7 @@ def save_file(force_dialog=False):
     for each in DATA[current_page].liststore:   # create a copy without the first index
         copy_of_data.append(each[1:])
 
-    # if the file has a path and is not force_dialog'ed the autosave it. A database created within the editor
+    # if the file has a path and is not force_dialog'ed then autosave it. A database created within the editor
     # one with the Untitled* name will not have a path and therefore will not have a '/'  or '\' (in Windows OS)
     if PATH_BREAK in DATA[current_page].file_name and not force_dialog:
         file_name_to_save = DATA[current_page].file_name   # grab the whole file path
@@ -1569,9 +1579,9 @@ def save_file(force_dialog=False):
                               DATA[current_page].header_types[1:], copy_of_data)
         file_name = file_name_to_save.split(PATH_BREAK)[-1]   # grab just the file name out of the path
         status_msg('File saved: ' + file_name)
-        DATA[current_page].notebook_label.set_text(file_name)   # set label text in notebook (removes the asterix)
+        DATA[current_page].notebook_label.set_text(file_name)   # set label text in notebook (removes the asterisk)
         DATA[current_page].file_edited = False   # reset that the file has been edited
-        WINDOW.post_filename_to_title(file_name)   # post the filename to the title (removes the asterix)
+        WINDOW.post_filename_to_title(file_name)   # post the filename to the title (removes the asterisk)
     else:  # display the dialog
         filechooserdialog = Gtk.FileChooserDialog('Save File', buttons=(
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
@@ -1604,6 +1614,52 @@ def save_file(force_dialog=False):
             WINDOW.post_filename_to_title(file_name)
 
         filechooserdialog.destroy()  # remove the dialog
+
+
+def export_to_html():
+    """Export to html.
+
+    (bool) -> None
+
+    This function displays a html save file dialog.
+    """
+    global WINDOW, DATA  # capture the window's and the databases' current data
+    current_page = WINDOW.notebook_tabs.get_current_page()  # grab the current tab
+    copy_of_data = list()  # make a data copy
+    for each in DATA[current_page].liststore:   # create a copy without the first index
+        copy_of_data.append(each[1:])
+
+    # display the dialog
+    html_name = DATA[current_page].file_name.split('.')[0]
+    html_name += '.html'
+    just_filename = DATA[current_page].file_name.split(PATH_BREAK)[-1]
+    filechooserdialog = Gtk.FileChooserDialog('Export as HTML...', buttons=(
+        Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+    filechooserdialog.set_action(Gtk.FileChooserAction.SAVE)  # save type dialog
+    filechooserdialog.set_do_overwrite_confirmation(True)  # confirm overwrites
+    filechooserdialog.set_current_name(html_name)   # preset the current name
+    filechooserdialog.set_create_folders(True)
+    filechooserdialog.set_transient_for(WINDOW.window)   # set parent windows (centers the dialog within)
+
+    filefilter = Gtk.FileFilter()  # set filters for databases only
+    filefilter.set_name("HTML file")
+    filefilter.add_pattern("*.html")
+    filechooserdialog.add_filter(filefilter)
+
+    response = filechooserdialog.run()
+
+    if response == Gtk.ResponseType.OK:
+        file_name_to_save = filechooserdialog.get_filename()
+
+        export_html.build_html(just_filename,
+                               file_name_to_save,
+                               DATA[current_page].header_names[1:],
+                               DATA[current_page].header_types[1:],
+                               copy_of_data,
+                               'JDFeditor ' + VERSION)
+        status_msg('File exported: ' + file_name_to_save)
+
+    filechooserdialog.destroy()  # remove the dialog
 
 
 def exit_n_save(widget, dialog):
@@ -1780,7 +1836,7 @@ def post_file_edited():
 
     (None) -> None
 
-    Function made for conveniance. Adds an asterix to the tab and the window's title that. Indicates that a file
+    Function made for conveniance. Adds an asterisk to the tab and the window's title that. Indicates that a file
     has been modified.
     """
     global WINDOW, DATA  # capture the window's and the databases' current data

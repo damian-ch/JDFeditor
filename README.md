@@ -1,4 +1,4 @@
-### JDFeditor
+### JDFeditor v 1.1
 GUI application for editing database files,
 specifically designed for the new JDF file format.
 (J)son(D)atabase(F)ormat
@@ -68,17 +68,18 @@ So far I found out that these 2 packages need to be installed from the terminal:
 * export/import sqlite
 * export/import xml
 * export/import csv
-* export html
 
 
 #### Known Issues:
 * On linux, columns do not resize if there is a horizontal bar on the bottom of the window, this is a bug filed some time ago to Gnome....
-* Searching rows by typing them in the database view posts errors, harmless but annoying.(fix in 1.01)
+* Searching rows by typing them in the database view posts errors, harmless but annoying.(fix in 1.2)
 * Focus is lost when right clicking on a cell with a float or integer value
 
 
 #### Change Log:
 
+* version 1.1
+    * added export html option, under the file menu section
 * version 1.0
     * final release version
 

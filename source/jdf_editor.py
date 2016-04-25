@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # coding=utf-8
 # -----------------------------------------------------------------------------
 # Name:        jdf_editor.py
@@ -8,7 +8,7 @@
 # Modified:    14/04/16
 # Copyright:   pjdamian.chrzanowski@gmail.com
 # License:     GNU Public License v3
-# Version:     1.0
+# Version:     1.2
 # Revision:    N/A
 # -----------------------------------------------------------------------------
 # jdf_editor, GUI application for editing database files,
@@ -41,7 +41,7 @@ if os.name == 'nt':
 else:
     PATH_BREAK = '/'   # set the Linux / Mac OS X style path breaker = '/'
 
-VERSION = 'v 1.1'   # current version
+VERSION = 'v 1.2'   # current version
 
 
 class MainWindow(object):

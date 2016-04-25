@@ -78,6 +78,8 @@ So far I found out that these 2 packages need to be installed from the terminal:
 
 #### Change Log:
 
+* version 1.2
+    * fixed an incorrect shebang information
 * version 1.1
     * added export html option, under the file menu section
 * version 1.0

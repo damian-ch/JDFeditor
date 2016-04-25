@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python jdf_editor.py
+python2 jdf_editor.py

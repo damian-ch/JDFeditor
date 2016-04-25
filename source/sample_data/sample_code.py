@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import jdf_lib
 
 my_data_variable = jdf_lib.load_database('sample_data.jdf')

@@ -1,4 +1,4 @@
-### JDFeditor v 1.1
+### JDFeditor v 1.2
 GUI application for editing database files,
 specifically designed for the new JDF file format.
 (J)son(D)atabase(F)ormat

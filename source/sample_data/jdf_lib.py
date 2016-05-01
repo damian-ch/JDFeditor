@@ -79,10 +79,11 @@ def load_database(file_name):
     return field_names, field_types, data_base
 
 if __name__ == '__main__':
-    stuff = load_database('Untitled.jdf')
-    if stuff == -1:
-        print 'load error'
-    else:
-        print(type(stuff), type(stuff[0]))
-        print stuff
-    raw_input('press enter')
+    # stuff = load_database('Untitled.jdf')
+    # if stuff == -1:
+    #     print 'load error'
+    # else:
+    #     print(type(stuff), type(stuff[0]))
+    #     print stuff
+    # raw_input('press enter')
+    pass

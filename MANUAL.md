@@ -4,6 +4,7 @@ I sincerely apologise for the lack of information in here. Will expand on it soo
 
 Step 1. Enter data into the database.
 Step 2. In your python code import jdf_lib and use the built-in function load_database()
+Step 3. Something else
 
 
 Run the code below to see how the jdf_lib works.
@@ -50,3 +51,5 @@ the following would print then the value of row 2 and column 1:
 
 Which in the case of sample_data.jdf is the value: 1460
 Remember that indexing starts at 0, not 1.
+
+Some addition at the end of the file
